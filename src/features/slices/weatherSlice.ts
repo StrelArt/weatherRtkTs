@@ -1,22 +1,19 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {WeatherInfo} from "../../utils/types";
+import {fetchWeather} from "../api/asyncWeatherAction.ts";
 
-const initialState: WeatherInfo = {
-    city: '',
-    country: '',
-    temp: 0,
-    pressure: 0,
-    sunset: 0
-}
+const initialState: WeatherInfo = {}
 
 
 const weatherSlice = createSlice({
     name: 'weather',
     initialState,
-    reducers: {
-        putWeatherInfo: (_state, action: PayloadAction<WeatherInfo>) => action.payload
-    }
+    reducers: {},
+    extraReducers: builder => {
+        builder
+            .addCase(fetchWeather.fulfilled, (_state, action: PayloadAction<WeatherInfo>) => action.payload)
+            .addCase(fetchWeather.rejected, () => ({}))
+}
 })
-
-export const {putWeatherInfo} = weatherSlice.actions
 export default weatherSlice.reducer
+
